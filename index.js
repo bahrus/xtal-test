@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+//import {Test} from "tape";  //typescript
 const handler = require('serve-handler');
 const http = require('http');
 let server = http.createServer((request, response) => {
@@ -14,10 +15,10 @@ server.listen(3000, () => {
 const test = require('tape');
 const puppeteer = require('puppeteer');
 const path = require('path');
-const TapeTestRunner = {
-    test: test
-};
-(async () => {
+// const TapeTestRunner = {
+//     test: test
+// } as Test;
+async function runTests(path, doCustomTests) {
     const launchOptions = {
         headless: true,
     };
@@ -25,8 +26,9 @@ const TapeTestRunner = {
     const page = await browser.newPage();
     page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
     //const devFile = path.resolve(__dirname, 'localhost:3000');
-    await page.goto('http://localhost:3000');
+    await page.goto('http://localhost:3000/' + path);
     await page.screenshot({ path: 'example.png' });
+    await doCustomTests ? doCustomTests(page) : null;
     server.shutdown(function () {
         console.log('Everything is cleanly shutdown.');
         process.exit();
@@ -40,8 +42,6 @@ const TapeTestRunner = {
     //     t.ok(textContent);
     //     t.end();
     // });
-})();
-//server.close();
-// setTimeout(() =>{
-//     server.close();
-// }, 10000);
+}
+exports.runTests = runTests;
+runTests('', null);

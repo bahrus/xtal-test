@@ -1,6 +1,6 @@
 
-import { ConsoleMessage, Browser, LaunchOptions  } from "puppeteer"; //typescript
-import {Test} from "tape";  //typescript
+import { ConsoleMessage, Browser, LaunchOptions, Page  } from "puppeteer"; //typescript
+//import {Test} from "tape";  //typescript
 const handler = require('serve-handler');
 const http = require('http');
 
@@ -19,11 +19,11 @@ server.listen(3000, () => {
 const test = require('tape');
 const puppeteer = require('puppeteer');
 const path = require('path');
-const TapeTestRunner = {
-    test: test
-} as Test;
+// const TapeTestRunner = {
+//     test: test
+// } as Test;
 
-(async () => {
+export async function runTests(path: string, doCustomTests: (page: Page) => void, ){
     const launchOptions = {
         headless: true,
         //args:['--allow-file-access-from-files']
@@ -32,8 +32,9 @@ const TapeTestRunner = {
     const page = await browser.newPage();
     page.on('console', (msg: ConsoleMessage) => console.log('PAGE LOG:', msg.text()));
     //const devFile = path.resolve(__dirname, 'localhost:3000');
-    await page.goto('http://localhost:3000');
+    await page.goto('http://localhost:3000/' + path);
     await page.screenshot({path: 'example.png'});
+    await doCustomTests ? doCustomTests(page) : null;
     server.shutdown(function() {
         console.log('Everything is cleanly shutdown.');
         process.exit();
@@ -47,9 +48,6 @@ const TapeTestRunner = {
     //     t.ok(textContent);
     //     t.end();
     // });
-    
-  })();
-//server.close();
-// setTimeout(() =>{
-//     server.close();
-// }, 10000);
+}
+
+runTests('', null);
