@@ -16,14 +16,11 @@ server.listen(3000, () => {
 
 
 
-const test = require('tape');
 const puppeteer = require('puppeteer');
-const path = require('path');
-// const TapeTestRunner = {
-//     test: test
-// } as Test;
+
 export interface IXtalTestRunnerOptions{
     path: string,
+    takeSnapshot?: boolean,
     launchOptions?: LaunchOptions
 }
 export interface IXtalTestRunner {
@@ -44,7 +41,10 @@ export async function runTests(options: IXtalTestRunnerOptions , doCustomTests: 
     const url = 'http://localhost:3000/' + options.path;
     console.log('going to ' + url);
     await page.goto(url);
-    await page.screenshot({ path: 'example.png' });
+    if(options.takeSnapshot){
+        await page.screenshot({ path: 'example.png' });
+    }
+    
     await doCustomTests(page);
     await browser.close();
     server.shutdown(function () {

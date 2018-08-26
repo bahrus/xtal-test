@@ -12,9 +12,7 @@ server = require('http-shutdown')(server);
 server.listen(3000, () => {
     console.log('Running at http://localhost:3000');
 });
-const test = require('tape');
 const puppeteer = require('puppeteer');
-const path = require('path');
 async function runTests(options, doCustomTests) {
     console.log('running tests');
     const launchOptions = {
@@ -29,7 +27,9 @@ async function runTests(options, doCustomTests) {
     const url = 'http://localhost:3000/' + options.path;
     console.log('going to ' + url);
     await page.goto(url);
-    await page.screenshot({ path: 'example.png' });
+    if (options.takeSnapshot) {
+        await page.screenshot({ path: 'example.png' });
+    }
     await doCustomTests(page);
     await browser.close();
     server.shutdown(function () {
