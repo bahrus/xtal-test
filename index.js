@@ -31,7 +31,7 @@ async function runTests(path, doCustomTests) {
     console.log('going to ' + url);
     await page.goto('http://localhost:3000/' + path);
     await page.screenshot({ path: 'example.png' });
-    await doCustomTests ? doCustomTests(page) : null;
+    await doCustomTests(page);
     await browser.close();
     server.shutdown(function () {
         console.log('Everything is cleanly shutdown.');
