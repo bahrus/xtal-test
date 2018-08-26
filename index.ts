@@ -27,7 +27,7 @@ export interface IXtalTestRunnerOptions{
     launchOptions: LaunchOptions
 }
 export interface IXtalTestRunner {
-    runTests(path: string, doCustomTests: (page: Page) => void);
+    runTests(options: IXtalTestRunnerOptions, doCustomTests: (page: Page) => void);
 }
 
 export async function runTests(options: IXtalTestRunnerOptions , doCustomTests: (page: Page) => void) {
