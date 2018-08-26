@@ -15,9 +15,6 @@ server.listen(3000, () => {
 const test = require('tape');
 const puppeteer = require('puppeteer');
 const path = require('path');
-// const TapeTestRunner = {
-//     test: test
-// } as Test;
 async function runTests(path, doCustomTests) {
     console.log('running tests');
     const launchOptions = {
@@ -37,14 +34,5 @@ async function runTests(path, doCustomTests) {
         console.log('Everything is cleanly shutdown.');
         process.exit();
     });
-    //await delay(4000);
-    //await page.waitFor(4000);
-    // const textContent = await page.$eval('page-2c', (c: any) => c.shadowRoot.querySelector('page-3c'));
-    // await page.screenshot({path: 'example.png'});
-    // await browser.close();
-    // TapeTestRunner.test('testing dev.html', t => {
-    //     t.ok(textContent);
-    //     t.end();
-    // });
 }
 exports.runTests = runTests;
