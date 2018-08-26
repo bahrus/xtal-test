@@ -23,7 +23,8 @@ const path = require('path');
 //     test: test
 // } as Test;
 
-export async function runTests(path: string, doCustomTests: (page: Page) => void, ){
+export async function runTests(path: string, doCustomTests: (page: Page) => void){
+    console.log('running tests');
     const launchOptions = {
         headless: true,
         //args:['--allow-file-access-from-files']
@@ -32,9 +33,12 @@ export async function runTests(path: string, doCustomTests: (page: Page) => void
     const page = await browser.newPage();
     page.on('console', (msg: ConsoleMessage) => console.log('PAGE LOG:', msg.text()));
     //const devFile = path.resolve(__dirname, 'localhost:3000');
+    const url = 'http://localhost:3000/' + path;
+    console.log('going to ' + url);
     await page.goto('http://localhost:3000/' + path);
     await page.screenshot({path: 'example.png'});
     await doCustomTests ? doCustomTests(page) : null;
+    await browser.close();
     server.shutdown(function() {
         console.log('Everything is cleanly shutdown.');
         process.exit();
@@ -50,4 +54,3 @@ export async function runTests(path: string, doCustomTests: (page: Page) => void
     // });
 }
 
-runTests('', null);
