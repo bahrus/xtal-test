@@ -15,16 +15,18 @@ server.listen(3000, () => {
 const test = require('tape');
 const puppeteer = require('puppeteer');
 const path = require('path');
-async function runTests(path, doCustomTests) {
+async function runTests(options, doCustomTests) {
     console.log('running tests');
     const launchOptions = {
         headless: true,
     };
+    if (options.launchOptions)
+        Object.assign(launchOptions, options.launchOptions);
     const browser = await puppeteer.launch(launchOptions);
     const page = await browser.newPage();
     page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
     //const devFile = path.resolve(__dirname, 'localhost:3000');
-    const url = 'http://localhost:3000/' + path;
+    const url = 'http://localhost:3000/' + options.path;
     console.log('going to ' + url);
     await page.goto('http://localhost:3000/' + path);
     await page.screenshot({ path: 'example.png' });
