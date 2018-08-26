@@ -28,7 +28,7 @@ async function runTests(options, doCustomTests) {
     //const devFile = path.resolve(__dirname, 'localhost:3000');
     const url = 'http://localhost:3000/' + options.path;
     console.log('going to ' + url);
-    await page.goto('http://localhost:3000/' + path);
+    await page.goto(url);
     await page.screenshot({ path: 'example.png' });
     await doCustomTests(page);
     await browser.close();
