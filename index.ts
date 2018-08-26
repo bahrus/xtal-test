@@ -24,7 +24,7 @@ const path = require('path');
 // } as Test;
 export interface IXtalTestRunnerOptions{
     path: string,
-    launchOptions: LaunchOptions
+    launchOptions?: LaunchOptions
 }
 export interface IXtalTestRunner {
     runTests(options: IXtalTestRunnerOptions, doCustomTests: (page: Page) => void);
