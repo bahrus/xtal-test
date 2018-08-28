@@ -4,16 +4,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const handler = require('serve-handler');
 const http = require('http');
 const net = require('net');
-let server = http.createServer((request, response) => {
-    // You pass two more arguments for config and middleware
-    // More details here: https://github.com/zeit/serve-handler#options
-    return handler(request, response);
-});
-server = require('http-shutdown')(server);
-server.listen(3000, () => {
-    console.log('Running at http://localhost:3000');
-});
-const puppeteer = require('puppeteer');
 function getAvailablePort(startingAt) {
     function getNextAvailablePort(currentPort, cb) {
         const server = net.createServer();
@@ -31,8 +21,19 @@ function getAvailablePort(startingAt) {
         getNextAvailablePort(startingAt, resolve);
     });
 }
+const puppeteer = require('puppeteer');
 async function runTests(options, doCustomTests) {
     console.log('running tests');
+    let server = http.createServer((request, response) => {
+        // You pass two more arguments for config and middleware
+        // More details here: https://github.com/zeit/serve-handler#options
+        return handler(request, response);
+    });
+    const port = await getAvailablePort(3000);
+    server = require('http-shutdown')(server);
+    server.listen(port, () => {
+        console.log('Running at http://localhost:' + port);
+    });
     const launchOptions = {
         headless: true,
     };
@@ -42,7 +43,6 @@ async function runTests(options, doCustomTests) {
     const page = await browser.newPage();
     page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
     //const devFile = path.resolve(__dirname, 'localhost:3000');
-    const port = await getAvailablePort(3000);
     const url = 'http://localhost:' + port + '/' + options.path;
     console.log('going to ' + url);
     await page.goto(url);
