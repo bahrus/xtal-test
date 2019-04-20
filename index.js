@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 //import {Test} from "tape";  //typescript
 const handler = require('serve-handler');
 const http = require('http');
@@ -20,7 +22,7 @@ function getAvailablePort(startingAt) {
     });
 }
 const puppeteer = require('puppeteer');
-export async function runTests(options, doCustomTests) {
+async function runTests(options, doCustomTests) {
     console.log('running tests');
     let server = http.createServer((request, response) => {
         // You pass two more arguments for config and middleware
@@ -54,3 +56,4 @@ export async function runTests(options, doCustomTests) {
         process.exit();
     });
 }
+module.exports = { runTests: runTests };

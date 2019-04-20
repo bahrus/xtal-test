@@ -44,7 +44,7 @@ export interface IXtalTestRunner {
 
 
 
-export async function runTests(options: IXtalTestRunnerOptions, doCustomTests: (page: Page) => void) {
+async function runTests(options: IXtalTestRunnerOptions, doCustomTests: (page: Page) => void) {
     console.log('running tests');
     let server = http.createServer((request, response) => {
         // You pass two more arguments for config and middleware
@@ -81,4 +81,6 @@ export async function runTests(options: IXtalTestRunnerOptions, doCustomTests: (
         process.exit();
     });
 }
+
+module.exports = {runTests: runTests};
 
