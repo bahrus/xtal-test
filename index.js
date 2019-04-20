@@ -36,6 +36,7 @@ async function runTests(options, doCustomTests) {
     });
     const launchOptions = {
         headless: true,
+        args: ['--enable-built-in-module-all']
     };
     if (options.launchOptions)
         Object.assign(launchOptions, options.launchOptions);

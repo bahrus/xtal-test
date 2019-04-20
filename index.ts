@@ -59,7 +59,7 @@ async function runTests(options: IXtalTestRunnerOptions, doCustomTests: (page: P
     
     const launchOptions = {
         headless: true,
-        //args:['--allow-file-access-from-files']
+        args:['--enable-built-in-module-all']
     } as LaunchOptions;
     if (options.launchOptions) Object.assign(launchOptions, options.launchOptions);
     const browser = await puppeteer.launch(launchOptions) as Browser;
