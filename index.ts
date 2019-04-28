@@ -42,7 +42,18 @@ export interface IXtalTestRunner {
     runTests(options: IXtalTestRunnerOptions, doCustomTests: (page: Page) => void);
 }
 
-
+async function launchWebServer(){
+    let server = http.createServer((request, response) => {
+        // You pass two more arguments for config and middleware
+        // More details here: https://github.com/zeit/serve-handler#options
+        return handler(request, response);
+    })
+    const port = await getAvailablePort(3030);
+    server = require('http-shutdown')(server);
+    server.listen(port, () => {
+        console.log('Running at http://localhost:' + port); 
+    });    
+}
 
 async function runTests(options: IXtalTestRunnerOptions, doCustomTests: (page: Page) => void) {
     console.log('running tests');
