@@ -93,5 +93,5 @@ async function runTests(options: IXtalTestRunnerOptions, doCustomTests: (page: P
     });
 }
 
-module.exports = {runTests: runTests};
+module.exports = {runTests: runTests, launchWebServer: launchWebServer};
 

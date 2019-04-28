@@ -69,4 +69,4 @@ async function runTests(options, doCustomTests) {
         process.exit();
     });
 }
-module.exports = { runTests: runTests };
+module.exports = { runTests: runTests, launchWebServer: launchWebServer };
