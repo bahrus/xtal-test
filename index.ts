@@ -40,6 +40,7 @@ export interface IXtalTestRunnerOptions {
 }
 export interface IXtalTestRunner {
     runTests(options: IXtalTestRunnerOptions, doCustomTests: (page: Page) => void);
+    launchWebServer();
 }
 
 async function launchWebServer(){
