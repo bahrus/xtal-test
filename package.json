@@ -1,6 +1,6 @@
 {
   "name": "xtal-test",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "A group of npm packages that make testing appeal to me.",
   "main": "index.js",
   "scripts": {
