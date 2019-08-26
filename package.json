@@ -19,6 +19,7 @@
     "@types/node": "12.0.7",
     "@types/puppeteer": "1.12.4",
     "http-shutdown": "1.2.1",
+    "minimist": "1.2.0",
     "puppeteer": "1.17.0",
     "serve": "11.0.1"
   },

@@ -40,16 +40,16 @@ export interface IXtalTestRunnerOptions {
 }
 export interface IXtalTestRunner {
     runTests(options: IXtalTestRunnerOptions, doCustomTests: (page: Page) => void);
-    launchWebServer();
+    launchWebServer(defaultPort?: number);
 }
 
-async function launchWebServer(){
+async function launchWebServer(defaultPort: number = 3030){
     let server = http.createServer((request, response) => {
         // You pass two more arguments for config and middleware
         // More details here: https://github.com/zeit/serve-handler#options
         return handler(request, response);
     })
-    const port = await getAvailablePort(3030);
+    const port = await getAvailablePort(defaultPort);
     server = require('http-shutdown')(server);
     server.listen(port, () => {
         console.log('Running at http://localhost:' + port); 

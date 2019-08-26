@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 //import {Test} from "tape";  //typescript
 const handler = require('serve-handler');
 const http = require('http');
@@ -20,13 +22,13 @@ function getAvailablePort(startingAt) {
     });
 }
 const puppeteer = require('puppeteer');
-async function launchWebServer() {
+async function launchWebServer(defaultPort = 3030) {
     let server = http.createServer((request, response) => {
         // You pass two more arguments for config and middleware
         // More details here: https://github.com/zeit/serve-handler#options
         return handler(request, response);
     });
-    const port = await getAvailablePort(3030);
+    const port = await getAvailablePort(defaultPort);
     server = require('http-shutdown')(server);
     server.listen(port, () => {
         console.log('Running at http://localhost:' + port);
