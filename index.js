@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 //import {Test} from "tape";  //typescript
 const handler = require('serve-handler');
 const http = require('http');
