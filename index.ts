@@ -36,7 +36,8 @@ const puppeteer = require('puppeteer');
 export interface IXtalTestRunnerOptions {
     path: string,
     takeSnapshot?: boolean,
-    launchOptions?: LaunchOptions
+    launchOptions?: LaunchOptions,
+    customTest: (page: Page) => void
 }
 export interface IXtalTestRunner {
     runTests(options: IXtalTestRunnerOptions, doCustomTests: (page: Page) => void);
@@ -56,7 +57,7 @@ async function launchWebServer(defaultPort: number = 3030){
     });    
 }
 
-async function runTests(options: IXtalTestRunnerOptions, doCustomTests: (page: Page) => void) {
+async function runTests(options: IXtalTestRunnerOptions[]) {
     console.log('running tests');
     let server = http.createServer((request, response) => {
         // You pass two more arguments for config and middleware
@@ -73,20 +74,25 @@ async function runTests(options: IXtalTestRunnerOptions, doCustomTests: (page: P
         headless: true,
         args:['--enable-built-in-module-all']
     } as LaunchOptions;
-    if (options.launchOptions) Object.assign(launchOptions, options.launchOptions);
     const browser = await puppeteer.launch(launchOptions) as Browser;
-    const page = await browser.newPage();
-    page.on('console', (msg: ConsoleMessage) => console.log('PAGE LOG:', msg.text()));
-    //const devFile = path.resolve(__dirname, 'localhost:3000');
-
-    const url = 'http://localhost:' + port + '/' + options.path;
-    console.log('going to ' + url);
-    await page.goto(url);
-    if (options.takeSnapshot) {
-        await page.screenshot({ path: 'example.png' });
+    for(const option of options) {
+        if (option.launchOptions) Object.assign(launchOptions, option.launchOptions);
+        
+        const page = await browser.newPage();
+        page.on('console', (msg: ConsoleMessage) => console.log('PAGE LOG:', msg.text()));
+        //const devFile = path.resolve(__dirname, 'localhost:3000');
+    
+        const url = 'http://localhost:' + port + '/' + option.path;
+        console.log('going to ' + url);
+        await page.goto(url);
+        if (option.takeSnapshot) {
+            await page.screenshot({ path: 'example.png' });
+        }
+    
+        await option.customTest(page);
     }
 
-    await doCustomTests(page);
+
     await browser.close();
     server.shutdown(function () {
         console.log('Everything is cleanly shutdown.');
