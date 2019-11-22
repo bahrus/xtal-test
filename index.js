@@ -88,14 +88,13 @@ async function runTests(tests) {
         console.log(e);
         passed = false;
     }
-    await shutDown(browser, server, passed);
+    await shutDown(browser, server);
+    return passed;
 }
-async function shutDown(browser, server, passed) {
+async function shutDown(browser, server) {
     await browser.close();
     server.shutdown(function () {
-        if (passed) {
-            console.log('Everything is cleanly shutdown.');
-        }
+        console.log('Everything is cleanly shutdown.');
         process.exit();
     });
 }

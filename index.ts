@@ -114,17 +114,16 @@ async function runTests(tests: IXtalTestRunnerOptions[]) {
         passed = false;
     }
 
-    await shutDown(browser, server, passed);
+    await shutDown(browser, server);
+    return passed;
 
 
 }
 
-async function shutDown(browser: Browser, server: any, passed: boolean){
+async function shutDown(browser: Browser, server: any){
     await browser.close();
     server.shutdown(function () {
-        if(passed){
-            console.log('Everything is cleanly shutdown.');
-        }
+        console.log('Everything is cleanly shutdown.');
         process.exit();
     });
 }
