@@ -22,6 +22,18 @@ function getAvailablePort(startingAt) {
     });
 }
 const puppeteer = require('puppeteer');
+async function standardTest(page, options) {
+    await page.waitFor(4000);
+    const errorTags = await page.$$('[err=true]');
+    if (errorTags.length > 0)
+        throw 'Found tag with attribute err=true';
+    const markings = await page.$$('[mark]');
+    const noOfExpectedMarkings = options.expectedNoOfSuccessMarkers === undefined ? 0 : options.expectedNoOfSuccessMarkers;
+    if (markings.length !== noOfExpectedMarkings) {
+        throw "Found " + markings.length + " tags with attribute mark.  Expecting " + noOfExpectedMarkings;
+    }
+}
+exports.standardTest = standardTest;
 async function launchWebServer(defaultPort = 3030) {
     let server = http.createServer((request, response) => {
         // You pass two more arguments for config and middleware
@@ -34,7 +46,7 @@ async function launchWebServer(defaultPort = 3030) {
         console.log('Running at http://localhost:' + port);
     });
 }
-async function runTests(options) {
+async function runTests(tests) {
     console.log('running tests');
     let server = http.createServer((request, response) => {
         // You pass two more arguments for config and middleware
@@ -51,19 +63,24 @@ async function runTests(options) {
         args: ['--enable-built-in-module-all']
     };
     const browser = await puppeteer.launch(launchOptions);
-    for (const option of options) {
-        if (option.launchOptions)
-            Object.assign(launchOptions, option.launchOptions);
+    for (const options of tests) {
+        if (options.launchOptions)
+            Object.assign(launchOptions, options.launchOptions);
         const page = await browser.newPage();
         page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
         //const devFile = path.resolve(__dirname, 'localhost:3000');
-        const url = 'http://localhost:' + port + '/' + option.path;
+        const url = 'http://localhost:' + port + '/' + options.path;
         console.log('going to ' + url);
         await page.goto(url);
-        if (option.takeSnapshot) {
+        if (options.takeSnapshot) {
             await page.screenshot({ path: 'example.png' });
         }
-        await option.customTest(page);
+        if (options.customTest) {
+            await options.customTest(page, options);
+        }
+        else {
+            await standardTest(page, options);
+        }
     }
     await browser.close();
     server.shutdown(function () {

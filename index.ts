@@ -37,7 +37,19 @@ export interface IXtalTestRunnerOptions {
     path: string,
     takeSnapshot?: boolean,
     launchOptions?: LaunchOptions,
-    customTest: (page: Page) => void
+    expectedNoOfSuccessMarkers?: number,
+    customTest: (page: Page, options: IXtalTestRunnerOptions) => void
+}
+
+export async function standardTest(page: Page, options: IXtalTestRunnerOptions){
+    await page.waitFor(4000);
+    const errorTags = await page.$$('[err=true]');
+    if(errorTags.length > 0) throw 'Found tag with attribute err=true';
+    const markings = await page.$$('[mark]');
+    const noOfExpectedMarkings = options.expectedNoOfSuccessMarkers === undefined ? 0 : options.expectedNoOfSuccessMarkers;
+    if(markings.length !== noOfExpectedMarkings){
+        throw "Found " + markings.length + " tags with attribute mark.  Expecting " + noOfExpectedMarkings;
+    }
 }
 export interface IXtalTestRunner {
     runTests(options: IXtalTestRunnerOptions[]);
@@ -57,7 +69,7 @@ async function launchWebServer(defaultPort: number = 3030){
     });    
 }
 
-async function runTests(options: IXtalTestRunnerOptions[]) {
+async function runTests(tests: IXtalTestRunnerOptions[]) {
     console.log('running tests');
     let server = http.createServer((request, response) => {
         // You pass two more arguments for config and middleware
@@ -75,21 +87,25 @@ async function runTests(options: IXtalTestRunnerOptions[]) {
         args:['--enable-built-in-module-all']
     } as LaunchOptions;
     const browser = await puppeteer.launch(launchOptions) as Browser;
-    for(const option of options) {
-        if (option.launchOptions) Object.assign(launchOptions, option.launchOptions);
+    for(const options of tests) {
+        if (options.launchOptions) Object.assign(launchOptions, options.launchOptions);
         
         const page = await browser.newPage();
         page.on('console', (msg: ConsoleMessage) => console.log('PAGE LOG:', msg.text()));
         //const devFile = path.resolve(__dirname, 'localhost:3000');
     
-        const url = 'http://localhost:' + port + '/' + option.path;
+        const url = 'http://localhost:' + port + '/' + options.path;
         console.log('going to ' + url);
         await page.goto(url);
-        if (option.takeSnapshot) {
+        if (options.takeSnapshot) {
             await page.screenshot({ path: 'example.png' });
         }
-    
-        await option.customTest(page);
+        if(options.customTest){
+            await options.customTest(page, options);
+        }else{
+            await standardTest(page, options)
+        }
+        
     }
 
 
