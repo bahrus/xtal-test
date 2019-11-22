@@ -40,7 +40,7 @@ export interface IXtalTestRunnerOptions {
     customTest: (page: Page) => void
 }
 export interface IXtalTestRunner {
-    runTests(options: IXtalTestRunnerOptions, doCustomTests: (page: Page) => void);
+    runTests(options: IXtalTestRunnerOptions[]);
     launchWebServer(defaultPort?: number);
 }
 
