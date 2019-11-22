@@ -41,7 +41,7 @@ export interface IXtalTestRunnerOptions {
     customTest?: (page: Page, options: IXtalTestRunnerOptions) => void
 }
 
-export async function standardTest(page: Page, options: IXtalTestRunnerOptions){
+async function standardTest(page: Page, options: IXtalTestRunnerOptions){
     await page.waitFor(4000);
     const errorTags = await page.$$('[err=true]');
     if(errorTags.length > 0) throw 'Found tag with attribute err=true';

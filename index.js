@@ -20,7 +20,7 @@ function getAvailablePort(startingAt) {
     });
 }
 const puppeteer = require('puppeteer');
-export async function standardTest(page, options) {
+async function standardTest(page, options) {
     await page.waitFor(4000);
     const errorTags = await page.$$('[err=true]');
     if (errorTags.length > 0)
