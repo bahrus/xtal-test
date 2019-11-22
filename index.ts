@@ -87,28 +87,37 @@ async function runTests(tests: IXtalTestRunnerOptions[]) {
         args:['--enable-built-in-module-all']
     } as LaunchOptions;
     const browser = await puppeteer.launch(launchOptions) as Browser;
-    for(const options of tests) {
-        if (options.launchOptions) Object.assign(launchOptions, options.launchOptions);
+    try{
+        for(const options of tests) {
+            if (options.launchOptions) Object.assign(launchOptions, options.launchOptions);
+            
+            const page = await browser.newPage();
+            page.on('console', (msg: ConsoleMessage) => console.log('PAGE LOG:', msg.text()));
+            //const devFile = path.resolve(__dirname, 'localhost:3000');
         
-        const page = await browser.newPage();
-        page.on('console', (msg: ConsoleMessage) => console.log('PAGE LOG:', msg.text()));
-        //const devFile = path.resolve(__dirname, 'localhost:3000');
-    
-        const url = 'http://localhost:' + port + '/' + options.path;
-        console.log('going to ' + url);
-        await page.goto(url);
-        if (options.takeSnapshot) {
-            await page.screenshot({ path: 'example.png' });
+            const url = 'http://localhost:' + port + '/' + options.path;
+            console.log('going to ' + url);
+            await page.goto(url);
+            if (options.takeSnapshot) {
+                await page.screenshot({ path: 'example.png' });
+            }
+            if(options.customTest){
+                await options.customTest(page, options);
+            }else{
+                await standardTest(page, options)
+            }
+            
         }
-        if(options.customTest){
-            await options.customTest(page, options);
-        }else{
-            await standardTest(page, options)
-        }
-        
+    }catch(e){
+        console.log(e);
     }
 
+    await shutDown(browser, server);
 
+
+}
+
+async function shutDown(browser: Browser, server: any){
     await browser.close();
     server.shutdown(function () {
         console.log('Everything is cleanly shutdown.');
