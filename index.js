@@ -89,6 +89,9 @@ async function runTests(tests) {
         passed = false;
     }
     await shutDown(browser, server);
+    if (!passed) {
+        process.exit(1);
+    }
     return passed;
 }
 async function shutDown(browser, server) {

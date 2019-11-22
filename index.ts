@@ -115,6 +115,9 @@ async function runTests(tests: IXtalTestRunnerOptions[]) {
     }
 
     await shutDown(browser, server);
+    if(!passed){
+        process.exit(1);
+    }
     return passed;
 
 
