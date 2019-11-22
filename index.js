@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 //import {Test} from "tape";  //typescript
 const handler = require('serve-handler');
 const http = require('http');
@@ -22,7 +20,7 @@ function getAvailablePort(startingAt) {
     });
 }
 const puppeteer = require('puppeteer');
-async function standardTest(page, options) {
+export async function standardTest(page, options) {
     await page.waitFor(4000);
     const errorTags = await page.$$('[err=true]');
     if (errorTags.length > 0)
@@ -33,7 +31,6 @@ async function standardTest(page, options) {
         throw "Found " + markings.length + " tags with attribute mark.  Expecting " + noOfExpectedMarkings;
     }
 }
-exports.standardTest = standardTest;
 async function launchWebServer(defaultPort = 3030) {
     let server = http.createServer((request, response) => {
         // You pass two more arguments for config and middleware

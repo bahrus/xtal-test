@@ -38,7 +38,7 @@ export interface IXtalTestRunnerOptions {
     takeSnapshot?: boolean,
     launchOptions?: LaunchOptions,
     expectedNoOfSuccessMarkers?: number,
-    customTest: (page: Page, options: IXtalTestRunnerOptions) => void
+    customTest?: (page: Page, options: IXtalTestRunnerOptions) => void
 }
 
 export async function standardTest(page: Page, options: IXtalTestRunnerOptions){
