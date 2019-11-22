@@ -87,6 +87,7 @@ async function runTests(tests: IXtalTestRunnerOptions[]) {
         args:['--enable-built-in-module-all']
     } as LaunchOptions;
     const browser = await puppeteer.launch(launchOptions) as Browser;
+    let passed = true;
     try{
         for(const options of tests) {
             if (options.launchOptions) Object.assign(launchOptions, options.launchOptions);
@@ -110,17 +111,20 @@ async function runTests(tests: IXtalTestRunnerOptions[]) {
         }
     }catch(e){
         console.log(e);
+        passed = false;
     }
 
-    await shutDown(browser, server);
+    await shutDown(browser, server, passed);
 
 
 }
 
-async function shutDown(browser: Browser, server: any){
+async function shutDown(browser: Browser, server: any, passed: boolean){
     await browser.close();
     server.shutdown(function () {
-        console.log('Everything is cleanly shutdown.');
+        if(passed){
+            console.log('Everything is cleanly shutdown.');
+        }
         process.exit();
     });
 }

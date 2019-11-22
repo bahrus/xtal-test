@@ -62,6 +62,7 @@ async function runTests(tests) {
         args: ['--enable-built-in-module-all']
     };
     const browser = await puppeteer.launch(launchOptions);
+    let passed = true;
     try {
         for (const options of tests) {
             if (options.launchOptions)
@@ -85,13 +86,16 @@ async function runTests(tests) {
     }
     catch (e) {
         console.log(e);
+        passed = false;
     }
-    await shutDown(browser, server);
+    await shutDown(browser, server, passed);
 }
-async function shutDown(browser, server) {
+async function shutDown(browser, server, passed) {
     await browser.close();
     server.shutdown(function () {
-        console.log('Everything is cleanly shutdown.');
+        if (passed) {
+            console.log('Everything is cleanly shutdown.');
+        }
         process.exit();
     });
 }
