@@ -24,7 +24,7 @@ function getAvailablePort(startingAt) {
 const puppeteer = require('puppeteer');
 async function standardTest(page, options) {
     const wait = options.wait !== undefined ? options.wait : 5000;
-    await page.waitFor(5000);
+    await page.waitFor(wait);
     const errorTags = await page.$$('[err=true]');
     if (errorTags.length > 0)
         throw 'Found tag with attribute err=true';
