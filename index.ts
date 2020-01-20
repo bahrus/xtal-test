@@ -38,11 +38,13 @@ export interface IXtalTestRunnerOptions {
     takeSnapshot?: boolean,
     launchOptions?: LaunchOptions,
     expectedNoOfSuccessMarkers?: number,
-    customTest?: (page: Page, options: IXtalTestRunnerOptions) => void
+    customTest?: (page: Page, options: IXtalTestRunnerOptions) => void,
+    wait?: number | undefined
 }
 
 async function standardTest(page: Page, options: IXtalTestRunnerOptions){
-    await page.waitFor(4000);
+    const wait = options.wait !== undefined ? options.wait : 5000;
+    await page.waitFor(5000);
     const errorTags = await page.$$('[err=true]');
     if(errorTags.length > 0) throw 'Found tag with attribute err=true';
     const markings = await page.$$('[mark]');

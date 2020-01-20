@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 //import {Test} from "tape";  //typescript
 const handler = require('serve-handler');
 const http = require('http');
@@ -21,7 +23,8 @@ function getAvailablePort(startingAt) {
 }
 const puppeteer = require('puppeteer');
 async function standardTest(page, options) {
-    await page.waitFor(4000);
+    const wait = options.wait !== undefined ? options.wait : 5000;
+    await page.waitFor(5000);
     const errorTags = await page.$$('[err=true]');
     if (errorTags.length > 0)
         throw 'Found tag with attribute err=true';
