@@ -21,7 +21,7 @@ function getAvailablePort(startingAt) {
         getNextAvailablePort(startingAt, resolve);
     });
 }
-const puppeteer = require('puppeteer');
+const puppeteer = require('playwright');
 async function standardTest(page, options) {
     const wait = options.wait !== undefined ? options.wait : 5000;
     await page.waitFor(wait);

@@ -31,7 +31,7 @@ function getAvailablePort(startingAt) {
 
 
 
-const puppeteer = require('puppeteer');
+const puppeteer = require('playwright');
 
 export interface IXtalTestRunnerOptions {
     path: string,
