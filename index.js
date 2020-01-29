@@ -74,7 +74,8 @@ async function runTests(tests) {
             for (const options of tests) {
                 if (options.launchOptions)
                     Object.assign(launchOptions, options.launchOptions);
-                const page = await browser.newPage();
+                const context = await browser.newContext();
+                const page = await context.newPage();
                 page.on("console", (msg) => console.log("PAGE LOG:", msg.text()));
                 //const devFile = path.resolve(__dirname, 'localhost:3000');
                 const url = "http://localhost:" + port + "/" + options.path;

@@ -88,14 +88,14 @@ async function runTests(tests: IXtalTestRunnerOptions[]) {
   } as LaunchOptions;
   let passed = true;
   for (const browserType of ['chromium', 'firefox', 'webkit']) {
-    const browser = (await playwright[browserType].launch(launchOptions)) as Browser;
+    const browser = (await playwright[browserType].launch(launchOptions)) as any;
 
     try {
       for (const options of tests) {
         if (options.launchOptions)
           Object.assign(launchOptions, options.launchOptions);
-
-        const page = await browser.newPage();
+        const context = await browser.newContext();
+        const page = await context.newPage();
         page.on("console", (msg: ConsoleMessage) =>
           console.log("PAGE LOG:", msg.text())
         );
