@@ -118,7 +118,7 @@ async function runTests(tests: IXtalTestRunnerOptions[]) {
       passed = false;
     }
 
-    await shutDown(browser, server);
+    await shutDown(browser, server, browserType === 'webkit');
     if (!passed) {
       process.exit(1);
     }
@@ -126,11 +126,11 @@ async function runTests(tests: IXtalTestRunnerOptions[]) {
   return passed;
 }
 
-async function shutDown(browser: Browser, server: any) {
+async function shutDown(browser: Browser, server: any, exit: boolean) {
   await browser.close();
   server.shutdown(function() {
     console.log("Everything is cleanly shutdown.");
-    process.exit();
+    if(exit) process.exit();
   });
 }
 

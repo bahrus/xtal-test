@@ -4,7 +4,8 @@
 			"es2017"
 		],
 		"module": "commonjs",
-		"target": "es2017"
+		"target": "es2017",
+		"watch": true
 	},
 	"exclude": [
 		"node_modules"

@@ -97,18 +97,19 @@ async function runTests(tests) {
             console.log(e);
             passed = false;
         }
-        await shutDown(browser, server);
+        await shutDown(browser, server, browserType === 'webkit');
         if (!passed) {
             process.exit(1);
         }
     }
     return passed;
 }
-async function shutDown(browser, server) {
+async function shutDown(browser, server, exit) {
     await browser.close();
     server.shutdown(function () {
         console.log("Everything is cleanly shutdown.");
-        process.exit();
+        if (exit)
+            process.exit();
     });
 }
 module.exports = { runTests: runTests, launchWebServer: launchWebServer };
