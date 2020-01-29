@@ -128,10 +128,13 @@ async function runTests(tests: IXtalTestRunnerOptions[]) {
 
 async function shutDown(browser: Browser, server: any, exit: boolean) {
   await browser.close();
-  server.shutdown(function() {
-    console.log("Everything is cleanly shutdown.");
-    if(exit) process.exit();
-  });
+  if(exit){
+    server.shutdown(function() {
+      console.log("Everything is cleanly shutdown.");
+       process.exit();
+    });
+  }
+
 }
 
 module.exports = { runTests: runTests, launchWebServer: launchWebServer };
