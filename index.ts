@@ -89,7 +89,7 @@ async function runTests(tests: IXtalTestRunnerOptions[]) {
   let passed = true;
   for (const browserType of ['chromium', 'firefox', 'webkit']) {
     const browser = (await playwright[browserType].launch(launchOptions)) as any;
-
+    console.log('testing ' + browserType);
     try {
       for (const options of tests) {
         if (options.launchOptions)

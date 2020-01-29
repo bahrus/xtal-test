@@ -70,6 +70,7 @@ async function runTests(tests) {
     let passed = true;
     for (const browserType of ['chromium', 'firefox', 'webkit']) {
         const browser = (await playwright[browserType].launch(launchOptions));
+        console.log('testing ' + browserType);
         try {
             for (const options of tests) {
                 if (options.launchOptions)
