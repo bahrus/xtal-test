@@ -87,7 +87,7 @@ async function runTests(tests: IXtalTestRunnerOptions[]) {
     args: ["--enable-built-in-module-all"]
   } as LaunchOptions;
   let passed = true;
-  for (const browserType of ['chromium', 'firefox', 'webkit']) {
+  for (const browserType of ['chromium', 'firefox']) {
     const browser = (await playwright[browserType].launch(launchOptions)) as any;
     console.log('testing ' + browserType);
     try {
@@ -118,7 +118,7 @@ async function runTests(tests: IXtalTestRunnerOptions[]) {
       passed = false;
     }
 
-    await shutDown(browser, server, browserType === 'webkit');
+    await shutDown(browser, server, browserType === 'firefox');
     if (!passed) {
       process.exit(1);
     }
