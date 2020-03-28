@@ -20,7 +20,7 @@
     "@types/puppeteer": "2.0.1",
     "http-shutdown": "1.2.2",
     "minimist": "1.2.5",
-    "playwright": "0.12.1",
+    "puppeteer": "2.1.1",
     "serve": "11.3.0"
   },
   "homepage": "https://github.com/bahrus/xtal-test#readme"
