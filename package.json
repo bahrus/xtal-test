@@ -16,12 +16,12 @@
     "url": "https://github.com/bahrus/xtal-test/issues"
   },
   "dependencies": {
-    "@types/node": "13.1.8",
-    "@types/puppeteer": "2.0.1",
+    "@types/node": "14.0.3",
+    "@types/puppeteer": "3.0.0",
     "http-shutdown": "1.2.2",
     "minimist": "1.2.5",
-    "puppeteer": "2.1.1",
-    "serve": "11.3.0"
+    "puppeteer": "3.3.0",
+    "serve": "11.3.2"
   },
   "homepage": "https://github.com/bahrus/xtal-test#readme"
 }
