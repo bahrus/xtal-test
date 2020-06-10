@@ -1,7 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 //import {Test} from "tape";  //typescript
 const handler = require('serve-handler');
 const http = require('http');
 const net = require('net');
+const puppeteer = require('puppeteer');
 function getAvailablePort(startingAt) {
     function getNextAvailablePort(currentPort, cb) {
         const server = net.createServer();
@@ -19,7 +22,6 @@ function getAvailablePort(startingAt) {
         getNextAvailablePort(startingAt, resolve);
     });
 }
-const puppeteer = require('puppeteer');
 async function standardTest(page, options) {
     const wait = options.wait !== undefined ? options.wait : 5000;
     await page.waitFor(wait);
@@ -57,8 +59,7 @@ async function runTests(tests) {
         console.log('Running at http://localhost:' + port);
     });
     const launchOptions = {
-        headless: true,
-        args: ['--enable-built-in-module-all']
+        headless: true
     };
     const browser = await puppeteer.launch(launchOptions);
     let passed = true;

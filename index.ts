@@ -4,7 +4,7 @@ import { ConsoleMessage, Browser, LaunchOptions, Page } from "puppeteer"; //type
 const handler = require('serve-handler');
 const http = require('http');
 const net = require('net');
-
+const puppeteer = require('puppeteer');
 
 
 function getAvailablePort(startingAt) {
@@ -31,7 +31,7 @@ function getAvailablePort(startingAt) {
 
 
 
-const puppeteer = require('puppeteer');
+
 
 export interface IXtalTestRunnerOptions {
     path: string,
@@ -85,8 +85,7 @@ async function runTests(tests: IXtalTestRunnerOptions[]) {
     });
     
     const launchOptions = {
-        headless: true,
-        args:['--enable-built-in-module-all']
+        headless: true
     } as LaunchOptions;
     const browser = await puppeteer.launch(launchOptions) as Browser;
     let passed = true;
