@@ -100,4 +100,3 @@ async function shutDown(browser, server) {
     });
 }
 module.exports = { runTests: runTests, launchWebServer: launchWebServer };
-export {};
