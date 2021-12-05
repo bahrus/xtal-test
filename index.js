@@ -36,7 +36,18 @@ async function launchWebServer(defaultPort = 3030) {
     let server = http.createServer((request, response) => {
         // You pass two more arguments for config and middleware
         // More details here: https://github.com/zeit/serve-handler#options
-        return handler(request, response);
+        return handler(request, response, {
+            cleanUrls: true,
+            headers: [
+                {
+                    "source": "**/*",
+                    "headers": [{
+                        "key": "Access-Control-Allow-Origin",
+                        "value": "*",
+                    }]
+                }
+            ]
+        });
     });
     const port = await getAvailablePort(defaultPort);
     server = require('http-shutdown')(server);
