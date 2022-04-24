@@ -1,4 +1,3 @@
-//import {Test} from "tape";  //typescript
 const handler = require('serve-handler');
 const http = require('http');
 const net = require('net');

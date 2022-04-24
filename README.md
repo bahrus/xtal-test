@@ -1,5 +1,7 @@
 # xtal-test
 
+This package is deprecated.  Use playwright instead.
+
 xtal-test provides, for starters, a simple local web file server.  To use, 
 
 1.  Add this to your package.json file:
