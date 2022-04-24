@@ -1,6 +1,6 @@
 {
   "name": "xtal-test",
-  "version": "0.0.56",
+  "version": "0.0.57",
   "description": "A group of npm packages that make testing appeal to me.",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,6 @@
   "bugs": {
     "url": "https://github.com/bahrus/xtal-test/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "homepage": "https://github.com/bahrus/xtal-test#readme"
 }
